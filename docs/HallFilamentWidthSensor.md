@@ -48,6 +48,25 @@ Sensor generates two analog output based on calculated filament width. Sum of ou
     # measurement_interval:10
     # Sensor readings done with 10 mm intervals by default. If necessary you are free to change this setting
 
+    #logging: False
+    #  Out diameter to terminal and klipper.log
+    #  can be turn on|of by command
+
+    #Virtual filament_switch_sensor suppurt. Create sensor named hall_filament_width_sensor.
+    #
+    #min_diameter:1.0
+    #Minimal diameter for trigger virtual filament_switch_sensor.
+    #use_current_dia_while_delay: False
+    #   Use the current diameter instead of the nominal diamenter while the measurement delay has not run through.
+    #
+    #Values from filament_switch_sensor. See the "filament_switch_sensor" section for information on these parameters.
+    #
+    #pause_on_runout: True
+    #runout_gcode:
+    #insert_gcode:
+    #event_delay: 3.0
+    #pause_delay: 0.5
+
 
 ## Commands
 **QUERY_FILAMENT_WIDTH** - Return the current measured filament width as result
@@ -59,6 +78,10 @@ Sensor generates two analog output based on calculated filament width. Sum of ou
 **ENABLE_FILAMENT_WIDTH_SENSOR** - Turn on the filament width sensor and start using it to do flow control
 
 **QUERY_RAW_FILAMENT_WIDTH** Return the current ADC channel values and RAW sensor value for calibration points
+
+**ENABLE_FILAMENT_WIDTH_LOG** - Turn on diameter logging
+
+**DISABLE_FILAMENT_WIDTH_LOG** - Turn off diameter logging
 
 ## Menu variables
 
@@ -83,12 +106,12 @@ Sensor generates two analog output based on calculated filament width. Sum of ou
     type: list
     name: Filament
     items:
-    __temp __hotend0_current, __temp __hotend0_target
-    .__unload
-    .__load
-    .__feed
-    __filament_width_current
-    __filament_raw_width_current
+     __temp __hotend0_current, __temp __hotend0_target
+     .__unload
+     .__load
+     .__feed
+     __filament_width_current
+     __filament_raw_width_current
 
 ## Calibration procedure
 Insert first  calibration rod (1.5 mm size) get first  raw sensor value
@@ -102,3 +125,7 @@ Save raw values in config
 ## How to enable sensor
 After power on by default sensor disabled.
 Enable sensor in start g-code by command **ENABLE_FILAMENT_WIDTH_SENSOR** or change enable parameter in config
+
+## Logging
+After power on by default diameter Logging disabled.
+Data to log added on every measurement interval (10 mm by default)

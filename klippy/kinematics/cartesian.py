@@ -62,6 +62,9 @@ class CartKinematics:
             rail.set_position(newpos)
             if i in homing_axes:
                 self.limits[i] = rail.get_range()
+    def note_z_not_homed(self):
+        # Helper for Safe Z Home
+        self.limits[2] = (1.0, -1.0)
     def _home_axis(self, homing_state, axis, rail):
         # Determine movement
         position_min, position_max = rail.get_range()
@@ -132,9 +135,9 @@ class CartKinematics:
         if self.limits[dc_axis][0] <= self.limits[dc_axis][1]:
             self.limits[dc_axis] = dc_rail.get_range()
     cmd_SET_DUAL_CARRIAGE_help = "Set which carriage is active"
-    def cmd_SET_DUAL_CARRIAGE(self, params):
+    def cmd_SET_DUAL_CARRIAGE(self, gcmd):
         gcode = self.printer.lookup_object('gcode')
-        carriage = gcode.get_int('CARRIAGE', params, minval=0, maxval=1)
+        carriage = gcmd.get_int('CARRIAGE', minval=0, maxval=1)
         self._activate_carriage(carriage)
         gcode.reset_last_position()
 
